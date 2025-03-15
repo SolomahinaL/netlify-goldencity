@@ -1,5 +1,14 @@
 exports.handler = async (event, context) => {
     try {
+        console.log('Тело запроса:', event.body); // Логируем тело запроса
+
+        if (!event.body) {
+            return {
+                statusCode: 400,
+                body: JSON.stringify({ error: 'Тело запроса отсутствует' }),
+            };
+        }
+
         const filters = JSON.parse(event.body);
 
         // Загрузка данных из внешнего API
