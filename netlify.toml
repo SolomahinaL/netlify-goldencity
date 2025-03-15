@@ -1,7 +1,6 @@
 [build]
-  # Указываем пустую папку для публикации, так как статические файлы не нужны
   publish = "."
+  command = "echo 'No build step required'"
 
 [functions]
-  # Указываем папку, где находятся функции
   directory = "netlify/functions"
