@@ -1,35 +1,6 @@
 exports.handler = async (event, context) => {
     try {
-        console.log('Получен запрос:', event);
-
-        let filters = {};
-
-        // Обработка GET-запроса
-        if (event.httpMethod === 'GET') {
-            // Извлекаем параметры из query-строки
-            filters = event.queryStringParameters || {};
-            console.log('Фильтры из GET-запроса:', filters);
-        }
-        // Обработка POST-запроса
-        else if (event.httpMethod === 'POST') {
-            // Проверяем наличие тела запроса
-            if (!event.body) {
-                return {
-                    statusCode: 400,
-                    body: JSON.stringify({ error: 'Тело запроса отсутствует' }),
-                };
-            }
-            // Парсим тело запроса
-            filters = JSON.parse(event.body);
-            console.log('Фильтры из POST-запроса:', filters);
-        }
-        // Если метод не GET и не POST
-        else {
-            return {
-                statusCode: 405,
-                body: JSON.stringify({ error: 'Метод не поддерживается' }),
-            };
-        }
+        const filters = JSON.parse(event.body);
 
         // Загрузка данных из внешнего API
         const response = await fetch('https://dataout.trendagent.ru/msk/apartments.json');
@@ -37,9 +8,8 @@ exports.handler = async (event, context) => {
             throw new Error('Ошибка при загрузке данных');
         }
         const apartments = await response.json();
-        console.log('Квартиры загружены:', apartments);
 
-        // Фильтрация квартир
+        // Фильтрация данных
         const filteredApartments = apartments.filter(apartment => {
             return (
                 (!filters.block || apartment.block_id === filters.block) &&
@@ -55,9 +25,6 @@ exports.handler = async (event, context) => {
             );
         });
 
-        console.log('Отфильтрованные квартиры:', filteredApartments);
-
-        // Возвращаем результат
         return {
             statusCode: 200,
             headers: {
