@@ -13,3 +13,9 @@ node_modules/
 .DS_Store
 Thumbs.db# Local Netlify folder
 .netlify
+
+# Netlify CLI временные файлы
+netlify/blobs-serve
+netlify/functions-internal
+netlify/state.json
+netlify/v1

@@ -1,7 +1,7 @@
 [build]
-  base = "/"
-  publish = "public"
-  command = "npm run build"
+  # Указываем пустую папку для публикации, так как статические файлы не нужны
+  publish = "."
 
 [functions]
-  directory = "src/functions"
+  # Указываем папку, где находятся функции
+  directory = "netlify/functions"
