@@ -12,7 +12,6 @@ node_modules/
 # Игнорировать системные файлы
 .DS_Store
 Thumbs.db# Local Netlify folder
-.netlify
 
 # Netlify CLI временные файлы
 netlify/blobs-serve
