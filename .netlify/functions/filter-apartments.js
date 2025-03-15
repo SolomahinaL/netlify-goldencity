@@ -1,6 +1,6 @@
 exports.handler = async (event, context) => {
     try {
-        console.log('Тело запроса:', event.body); // Логируем тело запроса
+        console.log('Начало выполнения функции');
 
         if (!event.body) {
             return {
@@ -10,15 +10,18 @@ exports.handler = async (event, context) => {
         }
 
         const filters = JSON.parse(event.body);
+        console.log('Фильтры:', filters);
 
-        // Загрузка данных из внешнего API
+        console.log('Загрузка данных из внешнего API...');
         const response = await fetch('https://dataout.trendagent.ru/msk/apartments.json');
         if (!response.ok) {
             throw new Error('Ошибка при загрузке данных');
         }
-        const apartments = await response.json();
 
-        // Фильтрация данных
+        const apartments = await response.json();
+        console.log('Данные загружены:', apartments.length, 'квартир');
+
+        console.log('Фильтрация данных...');
         const filteredApartments = apartments.filter(apartment => {
             return (
                 (!filters.block || apartment.block_id === filters.block) &&
@@ -33,6 +36,8 @@ exports.handler = async (event, context) => {
                 (!filters.areaTo || apartment.area_total <= filters.areaTo)
             );
         });
+
+        console.log('Фильтрация завершена:', filteredApartments.length, 'квартир');
 
         return {
             statusCode: 200,
